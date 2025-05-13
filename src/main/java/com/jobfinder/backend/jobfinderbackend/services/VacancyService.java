@@ -5,8 +5,11 @@ import com.jobfinder.backend.jobfinderbackend.dto.VacancyDetailsDTO;
 import com.jobfinder.backend.jobfinderbackend.models.Company;
 import com.jobfinder.backend.jobfinderbackend.models.Technology;
 import com.jobfinder.backend.jobfinderbackend.models.Vacancy;
+import com.jobfinder.backend.jobfinderbackend.repository.ResumeRepository;
 import com.jobfinder.backend.jobfinderbackend.repository.TechnologyRepository;
+import com.jobfinder.backend.jobfinderbackend.repository.UserRepository;
 import com.jobfinder.backend.jobfinderbackend.repository.VacancyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,14 +18,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class VacancyService {
     private final VacancyRepository vacancyRepository;
     private final TechnologyRepository technologyRepository;
-
-    public VacancyService(VacancyRepository vacancyRepository, TechnologyRepository technologyRepository) {
-        this.vacancyRepository = vacancyRepository;
-        this.technologyRepository = technologyRepository;
-    }
 
     public void createVacancy(CreateVacancyDTO input, Company company) {
 
@@ -84,6 +83,7 @@ public class VacancyService {
                 .orElseThrow(() -> new IllegalArgumentException("Vacancy with ID " + id + " not find"));
 
         VacancyDetailsDTO vacancyDetails = new VacancyDetailsDTO();
+        vacancyDetails.setId(vacancy.getId());
         vacancyDetails.setTitle(vacancy.getTitle());
         vacancyDetails.setShortDescription(vacancy.getShortDescription());
         vacancyDetails.setLocation(vacancy.getLocation());
@@ -112,4 +112,6 @@ public class VacancyService {
     public void deleteVacancyById(Long id) {
         vacancyRepository.deleteById(id);
     }
+
+
 }

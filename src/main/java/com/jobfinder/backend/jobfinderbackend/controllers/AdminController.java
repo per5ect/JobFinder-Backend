@@ -1,8 +1,9 @@
 package com.jobfinder.backend.jobfinderbackend.controllers;
 
+import com.jobfinder.backend.jobfinderbackend.dto.CompanyDetailsDTO;
 import com.jobfinder.backend.jobfinderbackend.dto.CreateTechnologyDTO;
-import com.jobfinder.backend.jobfinderbackend.dto.TechnologyDTO;
 import com.jobfinder.backend.jobfinderbackend.dto.UserDetailsDTO;
+import com.jobfinder.backend.jobfinderbackend.services.AdminService;
 import com.jobfinder.backend.jobfinderbackend.services.TechnologyService;
 import com.jobfinder.backend.jobfinderbackend.services.UserService;
 import com.jobfinder.backend.jobfinderbackend.services.VacancyService;
@@ -23,12 +24,13 @@ public class AdminController {
     private final TechnologyService technologyService;
     private final UserService userService;
     private final VacancyService vacancyService;
+    private final AdminService adminService;
 
 
     @GetMapping("/my-account")
     public ResponseEntity<UserDetailsDTO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName(); // Получаем email из токена
+        String email = authentication.getName();
 
         UserDetailsDTO userDetails = userService.getUserDetails(email);
         return ResponseEntity.ok(userDetails);
@@ -53,5 +55,17 @@ public class AdminController {
     public ResponseEntity<String> deleteVacancyById(@PathVariable Long id){
         vacancyService.deleteVacancyById(id);
         return ResponseEntity.ok("Successfully deleted technology");
+    }
+
+    @GetMapping("/all-users")
+    public ResponseEntity<List<UserDetailsDTO>> getAllUsers(){
+        List<UserDetailsDTO> users = adminService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/all-companies")
+    public ResponseEntity<List<CompanyDetailsDTO>> getAllCompanies(){
+        List<CompanyDetailsDTO> companies = adminService.getAllCompanies();
+        return ResponseEntity.ok(companies);
     }
 }

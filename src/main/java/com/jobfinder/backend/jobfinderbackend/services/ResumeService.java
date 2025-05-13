@@ -2,6 +2,7 @@ package com.jobfinder.backend.jobfinderbackend.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.jobfinder.backend.jobfinderbackend.dto.ResumeAnalysisResponseDTO;
 import com.jobfinder.backend.jobfinderbackend.models.Resume;
 import com.jobfinder.backend.jobfinderbackend.models.User;
 import com.jobfinder.backend.jobfinderbackend.repository.ResumeRepository;
@@ -83,5 +84,15 @@ public class ResumeService {
                 .orElseThrow(() -> new IllegalStateException("Resume not found for user"));
 
         return resume.getCloudLink();
+    }
+
+    public ResumeAnalysisResponseDTO getResumeDetails(String userEmail){
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        Resume resume = resumeRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalStateException("Resume not found for user"));
+
+        return new ResumeAnalysisResponseDTO(resume.getTechStackFromCV(), resume.getExperienceYears());
     }
 }
