@@ -4,7 +4,7 @@ import com.jobfinder.backend.jobfinderbackend.dto.LoginUserDTO;
 import com.jobfinder.backend.jobfinderbackend.dto.RegisterUserDTO;
 import com.jobfinder.backend.jobfinderbackend.dto.VerifyUserDTO;
 import com.jobfinder.backend.jobfinderbackend.models.User;
-import com.jobfinder.backend.jobfinderbackend.responses.LoginResponse;
+import com.jobfinder.backend.jobfinderbackend.dto.LoginResponseDTO;
 import com.jobfinder.backend.jobfinderbackend.services.UserAuthenticationService;
 import com.jobfinder.backend.jobfinderbackend.services.JWTService;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +27,11 @@ public class UserAuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDTO loginUserDto){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginUserDTO loginUserDto){
         User loginedUser = authenticationService.logIn(loginUserDto);
         String jwtToken = jwtService.generateToken(loginedUser);
-        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
-        return ResponseEntity.ok(loginResponse);
+        LoginResponseDTO loginResponseDTO = new LoginResponseDTO(jwtToken, jwtService.getExpirationTime());
+        return ResponseEntity.ok(loginResponseDTO);
     }
 
     @PostMapping("/verify")

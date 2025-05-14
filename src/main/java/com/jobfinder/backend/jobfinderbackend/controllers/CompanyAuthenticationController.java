@@ -2,7 +2,7 @@ package com.jobfinder.backend.jobfinderbackend.controllers;
 
 import com.jobfinder.backend.jobfinderbackend.dto.*;
 import com.jobfinder.backend.jobfinderbackend.models.Company;
-import com.jobfinder.backend.jobfinderbackend.responses.LoginResponse;
+import com.jobfinder.backend.jobfinderbackend.dto.LoginResponseDTO;
 import com.jobfinder.backend.jobfinderbackend.services.CompanyAuthenticationService;
 import com.jobfinder.backend.jobfinderbackend.services.JWTService;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +25,11 @@ public class CompanyAuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginCompanyDTO input){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginCompanyDTO input){
         Company loginedCompany = companyAuthenticationService.logIn(input);
         String jwtToken = jwtService.generateToken(loginedCompany);
-        LoginResponse loginResponse = new LoginResponse(jwtToken, jwtService.getExpirationTime());
-        return ResponseEntity.ok(loginResponse);
+        LoginResponseDTO loginResponseDTO = new LoginResponseDTO(jwtToken, jwtService.getExpirationTime());
+        return ResponseEntity.ok(loginResponseDTO);
     }
 
     @PostMapping("/verify")

@@ -1,15 +1,15 @@
-package com.jobfinder.backend.jobfinderbackend.responses;
+package com.jobfinder.backend.jobfinderbackend.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginResponse {
+public class LoginResponseDTO {
     private String token;
     private Long expiresIn;
 
-    public LoginResponse(String token,Long expiresIn) {
+    public LoginResponseDTO(String token, Long expiresIn) {
         this.token = token;
         this.expiresIn = expiresIn;
     }
