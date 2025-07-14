@@ -61,5 +61,4 @@ public class ResumeAnalysisService {
 
         return new ResumeAnalysisResponseDTO(techStack, experience);
     }
-
 }
